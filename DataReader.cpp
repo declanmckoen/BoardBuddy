@@ -1,8 +1,6 @@
-//
-// Created by justi on 4/14/2024.
-//
 
 #include "DataReader.h"
+#include "ChessGame.h"
 
 #include <iostream>
 #include <fstream>
@@ -39,25 +37,38 @@ void DataReader::read() {
     }
 
     //Okay, now read data[MOVES] into moves
-
     for(auto game : games){
-        //Regex pattern from https://stackoverflow.com/questions/40007937/regex-help-for-chess-moves-san
-        regex pattern("[BRQNK][a-h][1-8]|[BRQNK][a-h]x[a-h][1-8]|[BRQNK][a-h][1-8]x[a-h][1-8]|[BRQNK][a-h][1-8][a-h][1-8]|[BRQNK][a-h][a-h][1-8]|[BRQNK]x[a-h][1-8]|[a-h]x[a-h][1-8]=(B+R+Q+N)|[a-h]x[a-h][1-8]|[a-h][1-8]x[a-h][1-8]=(B+R+Q+N)|[a-h][1-8]x[a-h][1-8]|[a-h][1-8][a-h][1-8]=(B+R+Q+N)|[a-h][1-8][a-h][1-8]|[a-h][1-8]=(B+R+Q+N)|[a-h][1-8]|[BRQNK][1-8]x[a-h][1-8]|[BRQNK][1-8][a-h][1-8]");
-
-        //Regex Iterator
-        //Iterates through String, adds stuff that fits pattern
-        sregex_iterator it(game->data[ChessGame::MOVES].begin(), game->data[ChessGame::MOVES].end(), pattern);
-        sregex_iterator end;
-
-        for (it; it != end; ++it) {
-            game->moves.push_back(it->str()); // Extract and convert digits to integer, then add to vector
-        }
+        game->moves = parseMove(game->data[ChessGame::MOVES]);
     }
 
 }
 
 vector<ChessGame *> DataReader::getAllData() {
     return games;
+}
+
+void DataReader::assignAllSimilarityScores(ChessGame *userGame) {
+    for(auto game : games){
+        game->assignScore(userGame);
+    }
+}
+
+vector<string> DataReader::parseMove(const string& moveString) {
+    vector<string> moveList;
+
+    //Regex pattern from https://stackoverflow.com/questions/40007937/regex-help-for-chess-moves-san
+    regex pattern("[BRQNK][a-h][1-8]|[BRQNK][a-h]x[a-h][1-8]|[BRQNK][a-h][1-8]x[a-h][1-8]|[BRQNK][a-h][1-8][a-h][1-8]|[BRQNK][a-h][a-h][1-8]|[BRQNK]x[a-h][1-8]|[a-h]x[a-h][1-8]=(B+R+Q+N)|[a-h]x[a-h][1-8]|[a-h][1-8]x[a-h][1-8]=(B+R+Q+N)|[a-h][1-8]x[a-h][1-8]|[a-h][1-8][a-h][1-8]=(B+R+Q+N)|[a-h][1-8][a-h][1-8]|[a-h][1-8]=(B+R+Q+N)|[a-h][1-8]|[BRQNK][1-8]x[a-h][1-8]|[BRQNK][1-8][a-h][1-8]");
+
+    //Regex Iterator
+    //Iterates through String, adds stuff that fits pattern
+    sregex_iterator it(moveString.begin(), moveString.end(), pattern);
+    sregex_iterator end;
+
+    for (it; it != end; ++it) {
+        moveList.push_back(it->str()); // Extract and convert digits to integer, then add to vector
+    }
+
+    return moveList;
 }
 
 
