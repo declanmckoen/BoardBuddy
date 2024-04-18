@@ -14,7 +14,7 @@ bool VerifyMove(string& move) {
         return false;
     if (move.length() > 5)
         return false;
-    if (isnumber(move[0]))
+    if (isdigit(move[0]))
         return false;
     if (isupper(move[0])) {
         if (move[0] != 'K' && move[0] != 'Q' && move[0] != 'R' && move[0] != 'B' && move[0] != 'N')
@@ -126,10 +126,10 @@ void userInterface() {
     std::getline(cin, sortString);
     sortOption = stoi(sortString);
     if (sortOption == 1) {
-        quickSort(reader.games, 0, reader.games.length()-1);
+        quickSort(reader.games, 0, reader.games.size()-1);
     }
     else if (sortOption == 2) {
-        MergeSort(reader.games, 0, reader.games.length()-1);
+        MergeSort(reader.games, 0, reader.games.size()-1);
     }
     else {
         cout << "Please enter a valid number." << endl;
