@@ -1,9 +1,3 @@
-//
-// Created by justi on 4/14/2024.
-//
-
-#ifndef BOARDBUDDYDATAREADING_DATAREADER_H
-#define BOARDBUDDYDATAREADING_DATAREADER_H
 
 #include <string>
 #include <regex>
@@ -21,6 +15,10 @@ public:
     void read();
 
     vector<ChessGame*> getAllData();
+
+    void assignAllSimilarityScores(ChessGame* userGame);
+
+    vector<string> parseMove(const string& moveString);
 };
 
 
