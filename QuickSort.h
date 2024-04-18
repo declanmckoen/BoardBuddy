@@ -25,7 +25,7 @@ void printTest(vector<ChessGame*>& games, int size) {
     cout << endl;
 }
 
-
+//Partitions according to pivot
 int partition(vector<ChessGame*>& games, int low, int high) {
     double pivot = games[low]->getScore();
     int up = low;
