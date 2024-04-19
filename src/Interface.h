@@ -104,7 +104,7 @@ void userInterface() {
     }
 
     userGame.moves = userMoves;
-    reader.assignAllSimilarityScores(userGame);
+    reader.assignAllSimilarityScores(&userGame);
 
     string sortString;
     int sortOption;

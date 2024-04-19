@@ -1,3 +1,4 @@
+#include <iostream>
 
 #include "ChessGame.h"
 
@@ -52,4 +53,8 @@ void ChessGame::assignScore(ChessGame *otherGame) {
 
 double ChessGame::getScore() {
     return score;
+}
+
+void ChessGame::displayInfo() {
+    cout << data[ChessGame::WHITE] << endl;
 }

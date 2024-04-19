@@ -7,9 +7,10 @@ using namespace std;
 
 class DataReader {
     string filepath;
-    vector<ChessGame*> games;
 
 public:
+    vector<ChessGame*> games;
+
     DataReader(string path);
 
     void read();
