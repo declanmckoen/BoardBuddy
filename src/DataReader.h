@@ -21,5 +21,3 @@ public:
     vector<string> parseMove(const string& moveString);
 };
 
-
-#endif //BOARDBUDDYDATAREADING_DATAREADER_H
