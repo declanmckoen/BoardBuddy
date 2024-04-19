@@ -8,6 +8,7 @@
 #pragma once
 using namespace std;
 
+
 bool VerifyMove(string& move) {
     if (move.length() == 0)
         return false;
