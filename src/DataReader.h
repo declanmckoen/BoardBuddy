@@ -6,14 +6,14 @@
 using namespace std;
 
 class DataReader {
-    string filepath;
+
 
 public:
     vector<ChessGame*> games;
 
-    DataReader(string path);
+    DataReader();
 
-    void read();
+    bool read(string filepath);
 
     vector<ChessGame*> getAllData();
 

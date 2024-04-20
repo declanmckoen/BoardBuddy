@@ -8,15 +8,13 @@
 #include <string>
 #include <vector>
 
-DataReader::DataReader(string path) {
-    filepath = path;
-}
+DataReader::DataReader() {}
 
-void DataReader::read() {
+bool DataReader::read(string filepath) {
     ifstream file(filepath);
 
     if(!file.is_open()){
-        cout << "error: file did not open properly!";
+        return false;
     }
 
     string line;
@@ -41,6 +39,7 @@ void DataReader::read() {
         game->moves = parseMove(game->data[ChessGame::MOVES]);
     }
 
+    return true;
 }
 
 vector<ChessGame *> DataReader::getAllData() {
