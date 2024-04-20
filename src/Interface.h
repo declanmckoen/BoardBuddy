@@ -44,14 +44,39 @@ void userInterface() {
     ChessGame userGame;
     vector<string> userMoves;
 
-    DataReader reader("games_metadata_profile_2024_01.csv");
-    reader.read();
+    cout << "Welcome to Board Buddy!\n"
+            "Authors: Nick Lucindo, Declan McKoen, Justin Wang \n"<< endl;
+
+    cout << "Enter the filepath of the chess game CSV file\n"
+            "... or enter \"d\" and we will assume it is in data\\games_metadata_profile_2024_01.csv folder\n";
+
+    DataReader reader;
+    string filepath;
+
+    cout << "Enter filepath: ";
+    cin >> filepath;
+
+    if(filepath == "d"){
+        filepath = "./data/games_metadata_profile_2024_01.csv";
+    }
+
+    while(!reader.read(filepath)){
+        cout << "Unsuccessful! Try again?: ";
+        cin >> filepath;
+
+        if(filepath == "d"){
+            cout << "ok";
+            filepath = "./data/games_metadata_profile_2024_01.csv";
+        }
+    }
+
+    cout << "Yay! File opened successfully. Reading... (may take a little)" << endl;
 
     string numMovesString;
     int numMoves;
     string optionString;
     int option;
-    cout << "Welcome to Board Buddy!" << endl;
+
     cout << "Enter 1 to manually input moves." << endl;
     cout << "Enter 2 to copy and paste a valid string of moves from a pre-existing game." << endl;
     cout << "Option: ";
@@ -104,7 +129,7 @@ void userInterface() {
     }
 
     userGame.moves = userMoves;
-    reader.assignAllSimilarityScores(userGame);
+    reader.assignAllSimilarityScores(&userGame);
 
     string sortString;
     int sortOption;

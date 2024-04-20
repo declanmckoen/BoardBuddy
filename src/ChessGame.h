@@ -71,4 +71,6 @@ public:
     bool operator<=(const ChessGame& other) const;
 
     double getScore();
+
+    void displayInfo();
 };

@@ -6,13 +6,14 @@
 using namespace std;
 
 class DataReader {
-    string filepath;
-    vector<ChessGame*> games;
+
 
 public:
-    DataReader(string path);
+    vector<ChessGame*> games;
 
-    void read();
+    DataReader();
+
+    bool read(string filepath);
 
     vector<ChessGame*> getAllData();
 
@@ -21,5 +22,3 @@ public:
     vector<string> parseMove(const string& moveString);
 };
 
-
-#endif //BOARDBUDDYDATAREADING_DATAREADER_H
