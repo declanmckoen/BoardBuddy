@@ -7,9 +7,6 @@
 using namespace std;
 
 class ChessGame {
-private:
-    double score = 0;          // This is our calculated similarity score
-
 public:
     enum ChessAttributes {
         GAME_ID,
@@ -49,6 +46,7 @@ public:
 
     vector<string> data;
     vector<string> moves;
+    double score = 0; //similarity score
 
     void insertMove();
 

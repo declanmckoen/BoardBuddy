@@ -8,42 +8,126 @@
 #pragma once
 using namespace std;
 
-
-bool VerifyMove(string& move) {
-    if (move.length() == 0)
-        return false;
-    if (move.length() > 5)
-        return false;
-    if (isdigit(move[0]))
-        return false;
-    if (isupper(move[0])) {
-        if (move[0] != 'K' && move[0] != 'Q' && move[0] != 'R' && move[0] != 'B' && move[0] != 'N')
-            return false;
-    }
-    return true;
-}
-
-bool ParseInput(string& totalMove, string& move1, string& move2) {
-    bool invalid = true;
-    int start;
-    for (int i = 0; i < totalMove.length(); ++i) {
-        if (totalMove[i] == ' ') {
-            invalid = false;
-            move1 = totalMove.substr(0, i);
-            start = i+1;
-            break;
-        }
-    }
-    if (invalid)
-        return false;
-    move2 = totalMove.substr(start, totalMove.length()-move1.length()-1);
-    return true;
-}
-
-void userInterface() {
-    ChessGame userGame;
+void programLoop(DataReader& reader, ChessGame& userGame){
     vector<string> userMoves;
 
+    string numMovesString;
+    int numMoves;
+
+    string optionString;
+
+    cout << "Enter 1 to manually input moves." << endl;
+    cout << "Enter 2 to copy and paste a valid string of moves from a pre-existing game." << endl << endl;
+
+    cout << "Option: ";
+    cin >> optionString;
+
+    while (optionString != "1" && optionString != "2") {
+        cout << "Invalid option! Try again: ";
+        cin >> optionString;
+    }
+
+    //Move Entries
+    if (optionString == "1") {
+        cout << "Please enter how many moves you will input: " << endl;
+        cout << "Moves: ";
+        cin >> numMoves;
+        cout << endl << "Please enter each move in algebraic chess notation (i.e. e4). Then press Enter." << endl;
+        string totalMove;
+        for (int i = 1; i <= numMoves; ++i) {
+            for(int j = 0; j < 2; j++){
+                if(j % 2 == 0){
+                    cout << "Move " << i << " (White): ";
+                }else{
+                    cout << "Move " << i << " (Black): ";
+                }
+
+                cin >> totalMove;
+                if (!DataReader::isValidMove(totalMove)) { //is invalid entry
+                    cout << " > Error: Invalid Move! Try again." << endl;
+                    j--;
+                }else{ //is valid entry
+                    vector<string> movesToInput = reader.parseMove(totalMove);
+                    for(const auto& str : movesToInput){
+                        userMoves.push_back(str);
+                    }
+                }
+            }
+
+        }
+
+    }
+    else if (optionString == "2") {
+        string userInputString;
+        cout << "Paste your move data: " << endl;
+        cin.ignore();
+        getline(cin, userInputString);
+        userMoves = reader.parseMove(userInputString);
+    }
+
+    cout << endl << "Inputted Moves: " << endl;
+    for(const auto& s : userMoves){
+        cout << s << " ";
+    }
+    cout << endl << endl;
+
+    userGame.moves = userMoves;
+
+    //reader.assignAllSimilarityScores(&userGame);
+    reader.assignAllRandomSimilarityScores();
+    cout << "Which sort would you like to use?" << endl;
+    cout << "1. QuickSort" << endl << "2. MergeSort" << endl;
+
+    cout << "Option: ";
+    cin >> optionString;
+
+    while (optionString != "1" && optionString != "2") {
+        cout << "Invalid option! Try again: ";
+        cin >> optionString;
+    }
+
+    if (optionString == "1") {
+        quickSort(reader.games, 0, reader.games.size()-1);
+    }
+    else if (optionString == "2") {
+        MergeSort(reader.games, 0, reader.games.size()-1);
+    }
+
+    string numGamesString;
+    int numGames;
+    cout << endl << "How many games would you like to view?" << endl;
+    cout << "Number of games: ";
+    cin >> numGames;
+    cout << endl;
+
+    int i;
+    for (i = 0; i < numGames; i++) {
+        cout << "#" << i + 1 << ". ";
+        reader.games[i]->displayInfo();
+        cout << endl;
+    }
+
+    //Displays extra entries
+    cout << "Enter 'm' to display 1 more entry, enter anything else to exit." << endl;
+
+    while(true){
+        cout << "Option: ";
+        cin >> optionString;
+        if(optionString != "m"){
+            break;
+        }
+        cout << "#" << i + 1 << ". ";
+        reader.games[i]->displayInfo();
+        cout << endl;
+        i++;
+    }
+
+    cout << "Exiting!" << endl;
+}
+void userInterface() {
+    ChessGame userGame;
+
+    //Welcome Message
     cout << "Welcome to Board Buddy!\n"
             "Authors: Nick Lucindo, Declan McKoen, Justin Wang \n"<< endl;
 
@@ -53,6 +137,7 @@ void userInterface() {
     DataReader reader;
     string filepath;
 
+    //File Path Entry
     cout << "Enter filepath: ";
     cin >> filepath;
 
@@ -60,116 +145,39 @@ void userInterface() {
         filepath = "./data/games_metadata_profile_2024_01.csv";
     }
 
+    //Read the column data
     while(!reader.read(filepath)){
         cout << "Unsuccessful! Try again?: ";
         cin >> filepath;
 
         if(filepath == "d"){
-            cout << "ok";
             filepath = "./data/games_metadata_profile_2024_01.csv";
         }
     }
+    cout << endl << "File opened successfully." << endl;
 
-    cout << "Yay! File opened successfully. Reading... (may take a little)" << endl;
+    //Read the moves (contained within data[MOVES])
+    cout << "Reading and parsing move sets for each game... this WILL take a while!" << endl;
+    cout << " > Each . represents 1,000 movesets parsed" << endl;
+    cout << " > Each ! represents 10,000 movesets parsed" << endl << endl;
 
-    string numMovesString;
-    int numMoves;
-    string optionString;
-    int option;
+    //reader.parseAllMoves();
 
-    cout << "Enter 1 to manually input moves." << endl;
-    cout << "Enter 2 to copy and paste a valid string of moves from a pre-existing game." << endl;
-    cout << "Option: ";
-    std::getline(cin, optionString);
-    option = stoi(optionString);
+    bool runAgain = true;
+    string againString;
+    while(runAgain){
+        programLoop(reader, userGame);
 
-    if (option == 1) {
-        while (true) {
-            cout << "Number of Moves: ";
-            std::getline(cin, numMovesString);
-            try {
-                numMoves = stoi(numMovesString);
-                cout << endl;
-                break;
-            }
-            catch (const invalid_argument& e) {
-                cout << "Please enter a valid number" << endl;
-            }
-        }
-        cout << "Please enter each move in algebraic chess notation (i.e. e4 e5). Then press Enter." << endl;
-        string totalMove;
-        string p1move;
-        string p2move;
-        for (int i = 1; i <= numMoves; ++i) {
-            cout << "Move " << i << ": ";
-            std::getline(cin, totalMove);
-            if (!ParseInput(totalMove, p1move, p2move)) {
-                cout << "You have entered an invalid move. Please make sure your input is in the format [white move] [black move]." << endl;
-                i--;
-                continue;
-            }
-            if (!VerifyMove(p1move) || !VerifyMove(p2move)) {
-                cout << "You have entered an invalid move. Please check your entries." << endl;
-                i--;
-                continue;
-            }
-            userMoves.push_back(p1move);
-            userMoves.push_back(p2move);
-        }
-
-    }
-    else if (option == 2) {
-        string userInputString;
-        getline(cin, userInputString);
-        userMoves = reader.parseMove(userInputString);
-    }
-    else {
-        cout << "Please Enter a valid number." << endl;
-        exit(1);
-    }
-
-    userGame.moves = userMoves;
-    reader.assignAllSimilarityScores(&userGame);
-
-    string sortString;
-    int sortOption;
-    cout << "Which sort would you like to use?" << endl;
-    cout << "1. QuickSort" << endl << "2. MergeSort" << endl;
-
-    while (true) {
-        cout << "Enter a number: ";
-        std::getline(cin, sortString);
-        try {
-            sortOption = stoi(sortString);
-            cout << endl;
-            break;
-        }
-        catch (const invalid_argument& e) {
-            cout << "Please enter a valid number." << endl;
+        cout << "Would you like to create a new search?" << endl;
+        cout << "Enter 'y' for yes, and anything else for no.";
+        cout << "Option: ";
+        cin >> againString;
+        if(againString == "y"){
+            runAgain = true;
+        }else{
+            runAgain = false;
         }
     }
-    std::getline(cin, sortString);
-    sortOption = stoi(sortString);
-    if (sortOption == 1) {
-        quickSort(reader.games, 0, reader.games.size()-1);
-    }
-    else if (sortOption == 2) {
-        MergeSort(reader.games, 0, reader.games.size()-1);
-    }
-    else {
-        cout << "Please enter a valid number." << endl;
-        exit(1);
-    }
 
-    string numGamesString;
-    int numGames;
-    cout << "How many games would you like to view?" << endl;
-    cout << "Number of games: ";
-    getline(cin, numGamesString);
-    numGames = stoi(numGamesString);
-    for (int i = 0; i < numGames; ++i) {
-        cout << "Game " << i + 1 << ":" << endl;
-        reader.games[i]->displayInfo();
-        cout << endl;
-    }
+    cout << endl << "Goodbye! Thanks for using BoardBuddy!";
 }
