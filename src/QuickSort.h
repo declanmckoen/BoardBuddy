@@ -33,12 +33,12 @@ int partition(vector<ChessGame*>& games, int low, int high) {
 
     while (up < down) {
         for (int j = up; j < high; j++) {
-            if (games[up]->getScore() > pivot)
+            if (games[up]->getScore() < pivot)
                 break;
             up++;
         }
         for (int j = high; j > low; j--) {
-            if (games[down]->getScore() < pivot)
+            if (games[down]->getScore() > pivot)
                 break;
             down--;
         }
