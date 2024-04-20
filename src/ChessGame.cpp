@@ -59,7 +59,7 @@ void ChessGame::displayInfo() {
     cout << data[ChessGame::WHITE] << " (" << data[ChessGame::WHITE_ELO] << ") " << " vs. " << data[ChessGame::BLACK] << " (" << data[ChessGame::BLACK_ELO] << ") " << endl;
     if(data[ChessGame::RESULT] == "1-0"){
         cout << "Winner: White (" << data[ChessGame::WHITE] << ")";
-    }else if(data[ChessGame::RESULT] == "1-0"){
+    }else if(data[ChessGame::RESULT] == "0-1"){
         cout << "Winner: Black (" << data[ChessGame::BLACK] << ")";
     }else{
         cout << "Result: Draw!";

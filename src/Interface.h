@@ -100,11 +100,29 @@ void programLoop(DataReader& reader, ChessGame& userGame){
     cin >> numGames;
     cout << endl;
 
-    for (int i = 0; i < numGames; ++i) {
+    int i;
+    for (i = 0; i < numGames; i++) {
         cout << "#" << i + 1 << ". ";
         reader.games[i]->displayInfo();
         cout << endl;
     }
+
+    //Displays extra entries
+    cout << "Enter 'm' to display 1 more entry, enter anything else to exit." << endl;
+
+    while(true){
+        cout << "Option: ";
+        cin >> optionString;
+        if(optionString != "m"){
+            break;
+        }
+        cout << "#" << i + 1 << ". ";
+        reader.games[i]->displayInfo();
+        cout << endl;
+        i++;
+    }
+
+    cout << "Exiting!" << endl;
 }
 void userInterface() {
     ChessGame userGame;
@@ -145,5 +163,21 @@ void userInterface() {
 
     //reader.parseAllMoves();
 
-    programLoop(reader, userGame);
+    bool runAgain = true;
+    string againString;
+    while(runAgain){
+        programLoop(reader, userGame);
+
+        cout << "Would you like to create a new search?" << endl;
+        cout << "Enter 'y' for yes, and anything else for no.";
+        cout << "Option: ";
+        cin >> againString;
+        if(againString == "y"){
+            runAgain = true;
+        }else{
+            runAgain = false;
+        }
+    }
+
+    cout << endl << "Goodbye! Thanks for using BoardBuddy!";
 }
