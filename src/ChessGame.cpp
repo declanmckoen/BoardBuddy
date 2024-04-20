@@ -48,7 +48,7 @@ void ChessGame::assignScore(ChessGame *otherGame) {
         }
     }
 
-    score = s / min(otherMoves.size(), moves.size());
+    score = s;
 }
 
 double ChessGame::getScore() {
@@ -56,5 +56,16 @@ double ChessGame::getScore() {
 }
 
 void ChessGame::displayInfo() {
-    cout << data[ChessGame::WHITE] << endl;
+    cout << data[ChessGame::WHITE] << " (" << data[ChessGame::WHITE_ELO] << ") " << " vs. " << data[ChessGame::BLACK] << " (" << data[ChessGame::BLACK_ELO] << ") " << endl;
+    if(data[ChessGame::RESULT] == "1-0"){
+        cout << "Winner: White (" << data[ChessGame::WHITE] << ")";
+    }else if(data[ChessGame::RESULT] == "1-0"){
+        cout << "Winner: Black (" << data[ChessGame::BLACK] << ")";
+    }else{
+        cout << "Result: Draw!";
+    }
+    cout << " / Total Moves: " << data[TOTAL_MOVES] << endl;
+    cout << " - " << "Opening: " << data[OPENING] << endl;
+    cout << " - " << "Game Link: " << data[ChessGame::SITE] << endl;
+    cout << " - " << "Similarity Score: " << score << endl;
 }

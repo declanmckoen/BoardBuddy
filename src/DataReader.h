@@ -13,12 +13,18 @@ public:
 
     DataReader();
 
-    bool read(string filepath);
+    bool read(const string& filepath);
 
     vector<ChessGame*> getAllData();
 
     void assignAllSimilarityScores(ChessGame* userGame);
 
+    void assignAllRandomSimilarityScores();
+
+    void parseAllMoves();
+
     vector<string> parseMove(const string& moveString);
+
+    static bool isValidMove(const string& moveString);
 };
 
