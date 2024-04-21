@@ -46,6 +46,7 @@ void ChessGame::assignScore(ChessGame *otherGame) {
         if(error == 10){
             break;
         }
+        i++;
     }
 
     score = s;

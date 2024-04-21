@@ -11,6 +11,7 @@ The chess game CSV file can be downloaded here:
 https://www.kaggle.com/datasets/shkarupylomaxim/chess-games-dataset-lichess-2017-may
 
 Other than that, all this program requires is C++ 17!
+One other note: Reading the movesets can take a while.
 
 ## Thank you! ##
 Thank you for your interest in Board Buddy, and we hope you enjoy!
