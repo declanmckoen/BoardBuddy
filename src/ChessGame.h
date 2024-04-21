@@ -68,7 +68,9 @@ public:
     // Overloads <=
     bool operator<=(const ChessGame& other) const;
 
+    // Returns similarity score
     double getScore();
 
+    // Prints out info for game
     void displayInfo();
 };
