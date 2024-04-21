@@ -34,6 +34,8 @@ void programLoop(DataReader& reader, ChessGame& userGame){
         cin >> numMoves;
         cout << endl << "Please enter each move in algebraic chess notation (i.e. e4). Then press Enter." << endl;
         string totalMove;
+
+        //Moves, then move for white and black
         for (int i = 1; i <= numMoves; ++i) {
             for(int j = 0; j < 2; j++){
                 if(j % 2 == 0){
@@ -73,8 +75,10 @@ void programLoop(DataReader& reader, ChessGame& userGame){
 
     userGame.moves = userMoves;
 
-    //reader.assignAllSimilarityScores(&userGame);
-    reader.assignAllRandomSimilarityScores();
+    reader.assignAllSimilarityScores(&userGame);
+    //reader.assignAllRandomSimilarityScores(); //used for debugging...
+
+    //Sort selection
     cout << "Which sort would you like to use?" << endl;
     cout << "1. QuickSort" << endl << "2. MergeSort" << endl;
 
@@ -161,10 +165,12 @@ void userInterface() {
     cout << " > Each . represents 1,000 movesets parsed" << endl;
     cout << " > Each ! represents 10,000 movesets parsed" << endl << endl;
 
-    //reader.parseAllMoves();
+    reader.parseAllMoves();
 
     bool runAgain = true;
     string againString;
+
+    //Loop to allow multiple re-searches
     while(runAgain){
         programLoop(reader, userGame);
 
