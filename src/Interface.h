@@ -112,9 +112,9 @@ void programLoop(DataReader& reader, ChessGame& userGame){
     }
 
     //Displays extra entries
-    cout << "Enter 'm' to display 1 more entry, enter anything else to exit." << endl;
 
     while(true){
+        cout << "Enter 'm' to display 1 more entry, enter anything else to exit." << endl;
         cout << "Option: ";
         cin >> optionString;
         if(optionString != "m"){
@@ -175,7 +175,7 @@ void userInterface() {
         programLoop(reader, userGame);
 
         cout << "Would you like to create a new search?" << endl;
-        cout << "Enter 'y' for yes, and anything else for no.";
+        cout << "Enter 'y' for yes, and anything else for no." << endl;
         cout << "Option: ";
         cin >> againString;
         if(againString == "y"){
