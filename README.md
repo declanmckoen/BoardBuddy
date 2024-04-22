@@ -14,6 +14,8 @@ https://www.kaggle.com/datasets/shkarupylomaxim/chess-games-dataset-lichess-2017
 The program will also ask you for the filepath of the Moveset data file.
 It can be downloaded here:
 
+https://drive.google.com/file/d/1d8MWVI724-BdOxnStnH22ppi1MFnKDbg/view?usp=sharing
+
 Note that this file corresponds to the CSV file above and will not reflect any changes made to it.
 If changes are made to the original CSV file, the program is also able to rewrite the Moveset data file.
 
