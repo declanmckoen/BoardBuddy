@@ -1,5 +1,4 @@
 // Nicholas Lucindo - 4/18/2024
-
 #include <iostream>
 #include "ChessGame.h"
 

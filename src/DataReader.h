@@ -8,6 +8,7 @@ using namespace std;
 class DataReader {
 public:
     vector<ChessGame*> games;
+    string moveSetFilePath;
 
     DataReader();
 
@@ -31,5 +32,14 @@ public:
 
     //Returns whether a string is a valid move
     static bool isValidMove(const string& moveString);
+
+    //Writes move data to a text file
+    void writeMoveListToFile(const vector<string>& moveList);
+
+    //Sets the moveset filepath
+    void setMoveSetFilePath(string path);
+
+    //Reads moves.txt and assigns the moves vectors
+    void readMoveSetDotTxt();
 };
 
