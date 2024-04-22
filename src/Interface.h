@@ -158,13 +158,13 @@ void userInterface() {
             filepath = "./data/games_metadata_profile_2024_01.csv";
         }
     }
-    cout << endl << "File opened successfully." << endl;
+    cout << endl << "File opened successfully.\n" << endl;
 
     string movesPath;
     string stringOption;
     cout << "Enter the filepath of the chess game moveset file\n";
     cout << "Enter 'q' if you don't know what that is!\n";
-    cout << "Enter 'm' if you do know what that is and it is in ./data/moves.txt";
+    cout << "Enter 'm' if you do know what that is and it is in ./data/moves.txt\n";
     cout << "Moveset Path: ";
     cin >> stringOption;
 
