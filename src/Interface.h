@@ -28,14 +28,22 @@ void programLoop(DataReader& reader, ChessGame& userGame){
     }
 
     //Move Entries
+    cin.ignore(1000, '\n');
     if (optionString == "1") {
         cout << "Please enter how many moves you will input: " << endl;
-        cout << "Moves: ";
-        cin >> numMoves;
+        while (true) {
+            cout << "Moves: ";
+            try {
+                getline(cin, numMovesString);
+                numMoves = stoi(numMovesString);
+                break;
+            }
+            catch (invalid_argument& e) {
+                cout << "Please enter a valid number" << endl;
+            }
+        }
         cout << endl << "Please enter each move in algebraic chess notation (i.e. e4). Then press Enter." << endl;
         string totalMove;
-
-        //Moves, then move for white and black
         for (int i = 1; i <= numMoves; ++i) {
             for(int j = 0; j < 2; j++){
                 if(j % 2 == 0){
@@ -75,10 +83,8 @@ void programLoop(DataReader& reader, ChessGame& userGame){
 
     userGame.moves = userMoves;
 
-    reader.assignAllSimilarityScores(&userGame);
-    //reader.assignAllRandomSimilarityScores(); //used for debugging...
-
-    //Sort selection
+    //reader.assignAllSimilarityScores(&userGame);
+    reader.assignAllRandomSimilarityScores();
     cout << "Which sort would you like to use?" << endl;
     cout << "1. QuickSort" << endl << "2. MergeSort" << endl;
 
@@ -99,10 +105,19 @@ void programLoop(DataReader& reader, ChessGame& userGame){
 
     string numGamesString;
     int numGames;
+    cin.ignore(1000, '\n');
     cout << endl << "How many games would you like to view?" << endl;
-    cout << "Number of games: ";
-    cin >> numGames;
-    cout << endl;
+    while (true) {
+        cout << "Number of games: ";
+        try {
+            getline(cin, numGamesString);
+            numGames = stoi(numGamesString);
+            break;
+        }
+        catch (invalid_argument& e) {
+            cout << "Please enter a valid number" << endl;
+        }
+    }
 
     int i;
     for (i = 0; i < numGames; i++) {
@@ -112,9 +127,9 @@ void programLoop(DataReader& reader, ChessGame& userGame){
     }
 
     //Displays extra entries
+    cout << "Enter 'm' to display 1 more entry, enter anything else to exit." << endl;
 
     while(true){
-        cout << "Enter 'm' to display 1 more entry, enter anything else to exit." << endl;
         cout << "Option: ";
         cin >> optionString;
         if(optionString != "m"){
@@ -191,15 +206,15 @@ void userInterface() {
         reader.readMoveSetDotTxt();
     }
 
+    //reader.parseAllMoves();
+
     bool runAgain = true;
     string againString;
-
-    //Loop to allow multiple re-searches
     while(runAgain){
         programLoop(reader, userGame);
 
         cout << "Would you like to create a new search?" << endl;
-        cout << "Enter 'y' for yes, and anything else for no." << endl;
+        cout << "Enter 'y' for yes, and anything else for no.";
         cout << "Option: ";
         cin >> againString;
         if(againString == "y"){
