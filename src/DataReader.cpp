@@ -140,6 +140,7 @@ void DataReader::readMoveSetDotTxt() {
         return;
     }
 
+    cout << "size of games: " << games.size();
     string line;
     int i = 0;
 
@@ -156,7 +157,10 @@ void DataReader::readMoveSetDotTxt() {
         while (lineStream >> move) { // split by space
             moves.push_back(move);
         }
-        games[i]->moves = moves; // store each element into vector
+        
+        if(i < games.size()){
+            games[i]->moves = moves; // store each element into vector
+        }
         i++;
     }
 
