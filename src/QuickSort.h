@@ -5,6 +5,8 @@
 #include <random> // Testing purposes
 #include <algorithm> // For std::reverse
 
+#pragma once
+
 
 // Code for running tests
 double generateRandomNumber() {
