@@ -158,14 +158,38 @@ void userInterface() {
             filepath = "./data/games_metadata_profile_2024_01.csv";
         }
     }
-    cout << endl << "File opened successfully." << endl;
+    cout << endl << "File opened successfully.\n" << endl;
 
-    //Read the moves (contained within data[MOVES])
-    cout << "Reading and parsing move sets for each game... this WILL take a while!" << endl;
-    cout << " > Each . represents 1,000 movesets parsed" << endl;
-    cout << " > Each ! represents 10,000 movesets parsed" << endl << endl;
+    string movesPath;
+    string stringOption;
+    cout << "Enter the filepath of the chess game moveset file\n";
+    cout << "Enter 'q' if you don't know what that is!\n";
+    cout << "Enter 'm' if you do know what that is and it is in ./data/moves.txt\n";
+    cout << "Moveset Path: ";
+    cin >> stringOption;
 
-    reader.parseAllMoves();
+    if(stringOption == "q"){ //If the data isn't parsed for some reason
+        cout << "The moveset path is where a parsed version of the moves of each game will be stored.\n";
+        cout << "What would you like the path of this file to be? Include the extension '.txt'\n";
+        cout << "Moveset Path: ";
+        cin >> movesPath;
+        reader.setMoveSetFilePath(movesPath);
+
+        //Read the moves (contained within data[MOVES])
+        cout << "Reading, parsing, and writing move sets for each game... this WILL take a while!" << endl;
+        cout << " > Each . represents 1,000 movesets parsed" << endl;
+        cout << " > Each ! represents 10,000 movesets parsed" << endl << endl;
+
+        reader.parseAllMoves();
+    }else{
+        movesPath = stringOption;
+
+        if(movesPath == "m"){
+            movesPath = "./data/moves.txt";
+        }
+        reader.setMoveSetFilePath(movesPath);
+        reader.readMoveSetDotTxt();
+    }
 
     bool runAgain = true;
     string againString;

@@ -19,8 +19,14 @@ bool DataReader::read(const string& filepath) {
         return false;
     }
 
+    int i = 0;
     string line;
     while(getline(file, line)){
+        if(i == 0){
+            i++;
+            continue;
+        }
+
         stringstream ss(line);
         ChessGame* game = new ChessGame;
 
@@ -33,6 +39,7 @@ bool DataReader::read(const string& filepath) {
         }
 
         games.push_back(game);
+        i++;
     }
 
     return true;
@@ -62,6 +69,8 @@ vector<string> DataReader::parseMove(const string& moveString) {
     for (it; it != end; ++it) {
         moveList.push_back(it->str()); // Extract and convert digits to integer, then add to vector
     }
+
+    writeMoveListToFile(moveList);
 
     return moveList;
 }
@@ -95,8 +104,62 @@ void DataReader::parseAllMoves() {
             cout << ".";
         }
         game->moves = parseMove(game->data[ChessGame::MOVES]);
+
+        //cout << i << ". " << game->moves[0];
     }
     cout << endl;
+}
+
+void DataReader::writeMoveListToFile(const vector<string> &moveList)  {
+    auto filename = moveSetFilePath;
+    std::ofstream outFile(filename, std::ios::app); // Open in append mode
+    if (!outFile.is_open()) {
+        cout << " > error: could not open " << filename << " for writing." << endl;
+        return;
+    }
+
+    for (const auto& move : moveList) {
+        outFile << move << " "; // Separate moves by space
+    }
+    outFile << "\n"; // Separate vectors by comma
+
+
+    outFile.close();
+}
+
+void DataReader::setMoveSetFilePath(string path) {
+    moveSetFilePath = path;
+}
+
+void DataReader::readMoveSetDotTxt() {
+    //Assumes that CSV and Moves.txt are properly synced!
+    ifstream inFile(moveSetFilePath);
+
+    if (!inFile.is_open()) {
+        cout << " > error: could not open " << moveSetFilePath << endl;
+        return;
+    }
+
+    string line;
+    int i = 0;
+
+    while (getline(inFile, line)) { // Read each line
+        if(line.empty()){
+            continue;
+        }
+
+        istringstream lineStream(line);
+        vector<string> moves;
+        string move;
+
+        //Split up each line
+        while (lineStream >> move) { // split by space
+            moves.push_back(move);
+        }
+        games[i]->moves = moves; // store each element into vector
+        i++;
+    }
+
 }
 
 
