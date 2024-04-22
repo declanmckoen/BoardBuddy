@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <chrono>
 #include "ChessGame.h"
 #include "DataReader.h"
 #include "MergeSort.h"
@@ -83,8 +84,8 @@ void programLoop(DataReader& reader, ChessGame& userGame){
 
     userGame.moves = userMoves;
 
-    //reader.assignAllSimilarityScores(&userGame);
-    reader.assignAllRandomSimilarityScores();
+    reader.assignAllSimilarityScores(&userGame);
+    //reader.assignAllRandomSimilarityScores();
     cout << "Which sort would you like to use?" << endl;
     cout << "1. QuickSort" << endl << "2. MergeSort" << endl;
 
@@ -97,10 +98,18 @@ void programLoop(DataReader& reader, ChessGame& userGame){
     }
 
     if (optionString == "1") {
+        auto start = chrono::high_resolution_clock::now();
         quickSort(reader.games, 0, reader.games.size()-1);
+        auto stop = chrono::high_resolution_clock::now();
+        auto duration = chrono::duration_cast<chrono::milliseconds>(stop - start);
+        cout << "QuickSort time: " << duration.count() << " milliseconds" << endl << endl;
     }
     else if (optionString == "2") {
+        auto start = chrono::high_resolution_clock::now();
         MergeSort(reader.games, 0, reader.games.size()-1);
+        auto stop = chrono::high_resolution_clock::now();
+        auto duration = chrono::duration_cast<chrono::milliseconds>(stop - start);
+        cout << "MergeSort time: " << duration.count() << " milliseconds" << endl << endl;
     }
 
     string numGamesString;

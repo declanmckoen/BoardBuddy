@@ -140,7 +140,6 @@ void DataReader::readMoveSetDotTxt() {
         return;
     }
 
-    cout << "size of games: " << games.size();
     string line;
     int i = 0;
 
